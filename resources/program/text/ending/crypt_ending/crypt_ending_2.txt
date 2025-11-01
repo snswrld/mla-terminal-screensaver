@@ -1,3 +1,0 @@
-
-Storing final memory dump....Done.
-Ready for manual upload of new messenger parameters.

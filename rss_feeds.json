@@ -1,0 +1,78 @@
+{
+  "feeds": [
+    {
+      "name": "BBC News",
+      "url": "https://feeds.bbci.co.uk/news/rss.xml",
+      "enabled": true
+    },
+    {
+      "name": "CNN",
+      "url": "https://rss.cnn.com/rss/edition.rss",
+      "enabled": true
+    },
+    {
+      "name": "Reuters",
+      "url": "https://feeds.reuters.com/reuters/topNews",
+      "enabled": true
+    },
+    {
+      "name": "TechCrunch",
+      "url": "https://techcrunch.com/feed/",
+      "enabled": true
+    },
+    {
+      "name": "Ars Technica",
+      "url": "https://feeds.arstechnica.com/arstechnica/index",
+      "enabled": true
+    },
+    {
+      "name": "The Register",
+      "url": "https://www.theregister.com/headlines.atom",
+      "enabled": true
+    },
+    {
+      "name": "LATimes",
+      "url": "https://www.latimes.com/world-nation/rss2.0.xml",
+      "enabled": true
+    },
+    {
+      "name": "Yahoo",
+      "url": "https://www.yahoo.com/news/rss",
+      "enabled": true
+    },
+    {
+      "name": "CNBC",
+      "url": "https://www.cnbc.com/id/100003114/device/rss/rss.html",
+      "enabled": true
+    },
+    {
+      "name": "Politico",
+      "url": "https://rss.politico.com/playbook.xml",
+      "enabled": true
+    },
+    {
+      "name": "Yahoo Oddities",
+      "url": "https://news.yahoo.com/rss/odd",
+      "enabled": true
+    },
+    {
+      "name": "Fediverse Report",
+      "url": "https://fediversereport.com/feed/",
+      "enabled": true
+    },
+    {
+      "name": "IndieBlog10",
+      "url": "https://indieblog.page/dailyfeed?num=10",
+      "enabled": true
+    }
+  ],
+  "settings": {
+    "updateIntervalMinutes": 5,
+    "scrollSpeedMs": 1000,
+    "maxItemsPerFeed": 10,
+    "runOnBattery": false,
+    "enableNetworkMonitoring": true,
+    "netstatIntervalSeconds": 30,
+    "wiresharkCaptureDurationMinutes": 5
+  }
+}
