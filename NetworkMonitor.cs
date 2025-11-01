@@ -205,26 +205,31 @@ namespace NetworkScreensaver
             try
             {
                 var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-                var logFile = Path.Combine(_logDirectory, $"network_activity_{timestamp}.txt");
-                
-                // Use PowerShell Get-NetTCPConnection instead of tshark (no admin required)
+                var duration = _settings.WiresharkCaptureDurationMinutes * 60; // Convert to seconds
+
+                // Create batch file path in same directory as executable
+                var batchFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tshark_capture.bat");
+
                 var startInfo = new ProcessStartInfo
                 {
-                    FileName = "powershell.exe",
-                    Arguments = $"-Command \"while($true) {{ Get-NetTCPConnection | Out-File -Append '{logFile}'; Start-Sleep 30 }}\"",
-                    UseShellExecute = false,
+                    FileName = batchFile,
+                    Arguments = $"\"{_logDirectory}\" {duration} {timestamp}",
+                    UseShellExecute = true, // Required for elevation
+                    Verb = "runas", // Request administrator privileges
                     CreateNoWindow = true,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true
+                    WindowStyle = ProcessWindowStyle.Hidden
                 };
-                
+
                 _wiresharkProcess = Process.Start(startInfo);
             }
-            catch
+            catch (Exception ex)
             {
-                // PowerShell not available, continue without it
+                // Log error and continue without tshark
+                var errorLog = Path.Combine(_logDirectory, "error_log.txt");
+                File.AppendAllText(errorLog, $"{DateTime.Now}: tshark capture failed: {ex.Message}\n");
             }
         }
+
 
         private async Task StartNetstatLogging()
         {
