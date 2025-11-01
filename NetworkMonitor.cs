@@ -16,12 +16,43 @@ namespace NetworkScreensaver
         private readonly List<NetworkConnection> _capturedConnections = new();
         private readonly HashSet<string> _initialConnections = new();
 
-        public NetworkMonitor()
+    public NetworkMonitor()
+    {
+        try
         {
-            _logDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "NetworkScreensaverLogs");
+            // Use Windows 11 compliant LocalApplicationData path
+            var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            if (string.IsNullOrEmpty(localAppData))
+                throw new InvalidOperationException("LocalApplicationData path not available");
+                
+            _logDirectory = Path.Combine(localAppData, "NetworkScreensaver", "Logs");
             Directory.CreateDirectory(_logDirectory);
-            _settings = ConfigManager.GetConfig().Settings;
         }
+        catch (Exception ex)
+        {
+            // Fallback to temp directory with proper error logging
+            try
+            {
+                _logDirectory = Path.Combine(Path.GetTempPath(), "NetworkScreensaver", "Logs");
+                Directory.CreateDirectory(_logDirectory);
+                
+                // Log the error for debugging
+                var errorLog = Path.Combine(_logDirectory, "error_log.txt");
+                File.AppendAllText(errorLog, $"{DateTime.Now}: Failed to use LocalApplicationData: {ex.Message}\n");
+            }
+            catch
+            {
+                // Final fallback - use current directory
+                _logDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Logs");
+                Directory.CreateDirectory(_logDirectory);
+            }
+        }
+        
+        _settings = ConfigManager.GetConfig().Settings;
+    }
+
+
+
 
         public async Task StartMonitoringAsync()
         {

@@ -1,27 +1,20 @@
 @echo off
-echo NetworkScreensaver Log File Locations
-echo =====================================
+echo Windows Path Diagnostics
+echo =======================
 echo.
-echo Current log directory (old path):
+echo User Profile: %USERPROFILE%
+echo AppData: %APPDATA%
+echo LocalAppData: %LOCALAPPDATA%
+echo.
+echo Checking if directories exist:
+if exist "%USERPROFILE%" (echo ✓ UserProfile exists) else (echo ✗ UserProfile missing)
+if exist "%APPDATA%" (echo ✓ AppData exists) else (echo ✗ AppData missing)
+if exist "%LOCALAPPDATA%" (echo ✓ LocalAppData exists) else (echo ✗ LocalAppData missing)
+echo.
+echo Current NetworkMonitor is trying to use:
 echo %USERPROFILE%\Documents\NetworkScreensaverLogs
 echo.
-echo Expected log directory (Windows 11 compliant):
+echo Should be using:
 echo %LOCALAPPDATA%\NetworkScreensaver\Logs
-echo.
-echo Checking for log files...
-echo.
-if exist "%USERPROFILE%\Documents\NetworkScreensaverLogs" (
-    echo Found logs in Documents folder:
-    dir "%USERPROFILE%\Documents\NetworkScreensaverLogs" /b
-) else (
-    echo No logs found in Documents folder
-)
-echo.
-if exist "%LOCALAPPDATA%\NetworkScreensaver\Logs" (
-    echo Found logs in LocalAppData folder:
-    dir "%LOCALAPPDATA%\NetworkScreensaver\Logs" /b
-) else (
-    echo No logs found in LocalAppData folder
-)
 echo.
 pause

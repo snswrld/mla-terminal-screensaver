@@ -13,7 +13,7 @@
    cd "c:\Users\d\Code_Proj\Screensaver\mla-terminal-screensaver"
    
    # Run the installation script
-   build_and_install.bat
+   install.bat
    ```
 
 3. **Configure Windows**:
