@@ -199,28 +199,27 @@ namespace NetworkScreensaver
             
             return connections;
         }
-
         private void StartWiresharkCapture()
         {
             try
             {
                 var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-                var duration = _settings.WiresharkCaptureDurationMinutes * 60; // Convert to seconds
-
-                // Create batch file path in same directory as executable
-                var batchFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "tshark_capture.bat");
-
+                var pcapFile = Path.Combine(_logDirectory, $"capture_{timestamp}.pcap");
+                
                 var startInfo = new ProcessStartInfo
                 {
-                    FileName = batchFile,
-                    Arguments = $"\"{_logDirectory}\" {duration} {timestamp}",
-                    UseShellExecute = true, // Required for elevation
-                    Verb = "runas", // Request administrator privileges
+                    FileName = "tshark",
+                    Arguments = $"-i any -w \"{pcapFile}\" -q",
+                    UseShellExecute = false,
                     CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden
+                    RedirectStandardError = true
                 };
-
+                
                 _wiresharkProcess = Process.Start(startInfo);
+                
+                // Log successful start
+                var errorLog = Path.Combine(_logDirectory, "error_log.txt");
+                File.AppendAllText(errorLog, $"{DateTime.Now}: tshark started, saving to {pcapFile}\n");
             }
             catch (Exception ex)
             {
@@ -229,6 +228,8 @@ namespace NetworkScreensaver
                 File.AppendAllText(errorLog, $"{DateTime.Now}: tshark capture failed: {ex.Message}\n");
             }
         }
+
+
 
 
         private async Task StartNetstatLogging()

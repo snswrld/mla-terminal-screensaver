@@ -39,7 +39,7 @@ if exist "%USERPROFILE%\Documents\NetworkScreensaverLogs" rmdir /s /q "%USERPROF
 
 echo.
 echo Building and installing NetworkScreensaver...
-
+copy "tshark_capture.bat" "%SystemRoot%\System32\"
 REM Build the project
 dotnet clean NetworkScreensaver.csproj
 dotnet restore NetworkScreensaver.csproj
